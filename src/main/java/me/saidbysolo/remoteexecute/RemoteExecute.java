@@ -3,9 +3,19 @@ package me.saidbysolo.remoteexecute;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.javalin.Javalin;
+import io.javalin.http.Context;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public final class RemoteExecute extends JavaPlugin {
     private static Javalin app = null;
+
+    public static void testPost(Context ctx) {
+        String a = ctx.req.getParameter("a");
+        if (a == "b") {
+            ctx.result("OK");
+        }
+        ctx.result("NOT_OK");
+    }
 
     @Override
     public void onEnable() {
@@ -14,11 +24,15 @@ public final class RemoteExecute extends JavaPlugin {
         Thread.currentThread().setContextClassLoader(RemoteExecute.class.getClassLoader());
 
         if (app == null) {
-            app = Javalin.create().start(6974);
-            app.get("", ctx -> ctx.result("Hello, World"));
-
+            app = Javalin.create();
+            app.routes(() -> {
+                path("", () -> {
+                    post(RemoteExecute::testPost);
+                });
+            });
         }
         app.start(6974);
+
         Thread.currentThread().setContextClassLoader(CL);
     }
 
