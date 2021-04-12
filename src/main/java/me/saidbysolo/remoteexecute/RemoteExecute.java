@@ -10,11 +10,13 @@ public final class RemoteExecute extends JavaPlugin {
     private static Javalin app = null;
 
     public static void testPost(Context ctx) {
-        String a = ctx.attribute("a");
+        String a = ctx.formParam("a");
         if (a == "b") {
             ctx.result("OK");
+        } else {
+            ctx.result("NOT_OK");
         }
-        ctx.result("NOT_OK");
+
     }
 
     @Override
