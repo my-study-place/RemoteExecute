@@ -10,7 +10,7 @@ public final class RemoteExecute extends JavaPlugin {
     private static Javalin app = null;
 
     public static void testPost(Context ctx) {
-        String a = ctx.req.getParameter("a");
+        String a = ctx.attribute("a");
         if (a == "b") {
             ctx.result("OK");
         }
