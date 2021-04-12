@@ -1,5 +1,6 @@
 package me.saidbysolo.remoteexecute;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.javalin.Javalin;
@@ -10,15 +11,11 @@ public final class RemoteExecute extends JavaPlugin {
     private static Javalin app = null;
 
     public static void testPost(Context ctx) {
-        String a = ctx.attribute("a");
-        String b = ctx.queryParam("a");
-        String c = ctx.sessionAttribute("a");
-        String d = ctx.formParam("a");
-        System.out.println("a:" + a + "b:" + b + "c:" + c + "d:" + d);
-        if (a == "b") {
-            ctx.result("OK");
-        } else {
+        String commandLine = ctx.formParam("command");
+        if (commandLine.isEmpty()) {
             ctx.result("NOT_OK");
+        } else {
+            Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
         }
 
     }
