@@ -22,9 +22,8 @@ public final class RemoteExecute extends JavaPlugin {
             PrintStream ps = new PrintStream(baos);
             PrintStream old = System.out;
             System.setOut(ps);
-            Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
             System.setOut(old);
-            System.out.flush();
+            Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
             ctx.result(baos.toString());
         }
 
