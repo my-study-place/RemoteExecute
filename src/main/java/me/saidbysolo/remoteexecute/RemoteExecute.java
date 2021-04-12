@@ -9,12 +9,17 @@ public final class RemoteExecute extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        ClassLoader CL = Thread.currentThread().getContextClassLoader();
+
+        Thread.currentThread().setContextClassLoader(RemoteExecute.class.getClassLoader());
+
         if (app == null) {
             app = Javalin.create().start(6974);
             app.get("", ctx -> ctx.result("Hello, World"));
 
         }
         app.start(6974);
+        Thread.currentThread().setContextClassLoader(CL);
     }
 
     @Override
