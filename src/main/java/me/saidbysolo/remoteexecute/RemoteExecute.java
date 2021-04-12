@@ -7,6 +7,9 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 import static io.javalin.apibuilder.ApiBuilder.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 public final class RemoteExecute extends JavaPlugin {
     private static Javalin app = null;
 
@@ -15,7 +18,13 @@ public final class RemoteExecute extends JavaPlugin {
         if (commandLine.isEmpty()) {
             ctx.result("NOT_OK");
         } else {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PrintStream ps = new PrintStream(baos);
+            PrintStream old = System.out;
+            System.setOut(ps);
+            System.setOut(old);
             Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
+            ctx.result(baos.toString());
         }
 
     }
