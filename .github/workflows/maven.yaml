@@ -27,6 +27,6 @@ jobs:
           host: ${{ secrets.HOST }}
           username: "opc"
           key: ${{ secrets.PRIVATE_KEY }}
-          source: "target/Study-1.0-SNAPSHOT.jar"
+          source: "target/RemoteExecute-1.0-SNAPSHOT.jar"
           target: "/home/opc/server/plugins/"
           strip_components: 1
