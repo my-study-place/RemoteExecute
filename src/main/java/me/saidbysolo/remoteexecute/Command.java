@@ -19,7 +19,7 @@ public class Command implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (label.equalsIgnoreCase("요청")) {
-                int a = this.request.makeJsonForm("A", 2000, "a", "A");
+                byte[] a = this.request.makeJsonForm("A", 2000, "a", "A");
                 Bukkit.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
                     this.request.requestPostJson("https://webhook.site/82d39c46-11e8-4482-9126-093eb3ff49d5", a);
                 });
