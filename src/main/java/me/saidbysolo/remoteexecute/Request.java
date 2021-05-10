@@ -28,7 +28,7 @@ public class Request {
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.connect();
         } catch (Exception e) {
-
+            System.out.println(e);
         }
         ;
 
