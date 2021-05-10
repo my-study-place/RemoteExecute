@@ -1,3 +1,6 @@
 name: RemoteExecute
 version: ${project.version}
 main: me.saidbysolo.remoteexecute.RemoteExecute
+commands:
+  요청:
+    description: request
