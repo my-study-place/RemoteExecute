@@ -25,6 +25,7 @@ public class Request {
             connection.setRequestMethod("POST");
             connection.setConnectTimeout(3000);
             connection.setReadTimeout(3000);
+            connection.setDoOutput(true);
             connection.setFixedLengthStreamingMode(out.length);
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.connect();
