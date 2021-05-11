@@ -49,7 +49,7 @@ public class Command implements CommandExecutor {
                         if (player.getInventory().containsAtLeast(new ItemStack(getMappping().get(args[0])),
                                 Integer.parseInt(args[1]))) { // 인벤토리에 아이템 충분한지 확인
                             player.getInventory()
-                                    .remove(new ItemStack(getMappping().get(args[0]), Integer.parseInt(args[1])));
+                                    .removeItem(new ItemStack(getMappping().get(args[0]), Integer.parseInt(args[1])));
                             Bukkit.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
                                 int code = this.request.post("1", 200, "1", "a");
                                 if (code != 200) {
