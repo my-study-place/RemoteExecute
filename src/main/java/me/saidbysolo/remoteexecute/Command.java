@@ -16,7 +16,7 @@ public class Command implements CommandExecutor {
 
     public Command(RemoteExecute plugin) {
         this.plugin = plugin;
-        this.request = new Request(plugin);
+        this.request = new Request();
     }
 
     private Map<String, Material> getMappping() {
@@ -45,20 +45,21 @@ public class Command implements CommandExecutor {
                 if (args.length != 2) {
                     player.sendMessage("인자가 부족합니다.");
                 } else {
-                    if (getMappping().containsKey(args[0]) && checkNumberArg(args[1])) {
+                    if (getMappping().containsKey(args[0]) && checkNumberArg(args[1])) { // arg[0] 광물 arg[1] 숫자
                         if (player.getInventory().containsAtLeast(new ItemStack(getMappping().get(args[0])),
                                 Integer.parseInt(args[1]))) { // 인벤토리에 아이템 충분한지 확인
                             player.getInventory()
-                                    .removeItem(new ItemStack(getMappping().get(args[0]), Integer.parseInt(args[1])));
-                            Bukkit.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-                                int code = this.request.post("1", 200, "1", "a");
-                                if (code != 200) {
+                                    .removeItem(new ItemStack(getMappping().get(args[0]), Integer.parseInt(args[1]))); // 아이템
+                                                                                                                       // 삭제
+                            Bukkit.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> { // 비동기로 실행해야함
+                                int code = this.request.post("1", 200, "1", "a"); // 상태코드
+                                if (code != 200) { // 핸들
                                     player.sendMessage("환전에 실패했어요");
                                 } else {
                                     player.sendMessage("환전이 완료되었어요!");
                                 }
                             });
-                        } else {
+                        } else { // 아이템 부족 핸들
                             player.sendMessage("아이템이 부족합니다.");
                         }
 
