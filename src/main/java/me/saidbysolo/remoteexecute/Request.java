@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+// https://stackoverflow.com/questions/3324717/sending-http-post-request-in-java
 public class Request {
     public byte[] makeJsonForm(String id, int point, String game, String key) {
         byte[] out = String.format("{\"id\": %s, \"point\": %d, \"game\": %s, \"key\":%s}", id, point, game, key)

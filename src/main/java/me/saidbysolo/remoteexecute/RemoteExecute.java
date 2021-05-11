@@ -6,7 +6,7 @@ public final class RemoteExecute extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getCommand("환전").setExecutor(new Command(this));
+        getCommand("환전").setExecutor(new Command(this)); // 커맨드 등록
     }
 
     @Override

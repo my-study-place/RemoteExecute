@@ -19,6 +19,7 @@ public class Command implements CommandExecutor {
         this.request = new Request();
     }
 
+    // {"다이아몬드": diamond, ...} 이런 자료구조
     private Map<String, Material> getMappping() {
         Map<String, Material> hashmap = new HashMap<String, Material>();
         hashmap.put("다이아몬드", Material.DIAMOND);
@@ -29,6 +30,7 @@ public class Command implements CommandExecutor {
         return hashmap;
     }
 
+    // 조금 더러운 방법으로 string 숫자인지 체크
     private boolean checkNumberArg(String number) {
         try {
             return Integer.parseInt(number) > 0;
@@ -41,8 +43,8 @@ public class Command implements CommandExecutor {
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (label.equalsIgnoreCase("환전")) {
-                if (args.length != 2) {
+            if (label.equalsIgnoreCase("환전")) { // 보통 대소문자 구별없이 체크할떄
+                if (args.length != 2) { // 인자 두개 만오니까 핸들
                     player.sendMessage("인자가 부족합니다.");
                 } else {
                     if (getMappping().containsKey(args[0]) && checkNumberArg(args[1])) { // arg[0] 광물 arg[1] 숫자
@@ -51,7 +53,9 @@ public class Command implements CommandExecutor {
                             player.getInventory()
                                     .removeItem(new ItemStack(getMappping().get(args[0]), Integer.parseInt(args[1]))); // 아이템
                                                                                                                        // 삭제
-                            Bukkit.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> { // 비동기로 실행해야함
+                            Bukkit.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> { // http 요청 비동기로
+                                                                                                         // 실행해야함 안그러면
+                                                                                                         // 멈춤
                                 int code = this.request.post("1", 200, "1", "a"); // 상태코드
                                 if (code != 200) { // 핸들
                                     player.sendMessage("환전에 실패했어요");
