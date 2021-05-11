@@ -3,6 +3,7 @@ package me.saidbysolo.remoteexecute;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,9 +11,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Command implements CommandExecutor {
+    private final RemoteExecute plugin;
     private final Request request;
 
     public Command(RemoteExecute plugin) {
+        this.plugin = plugin;
         this.request = new Request(plugin);
     }
 
@@ -39,15 +42,24 @@ public class Command implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (label.equalsIgnoreCase("환전")) {
-                if (args.length != 3) {
+                if (args.length != 2) {
                     player.sendMessage("인자가 부족합니다.");
                 } else {
                     if (getMappping().containsKey(args[0]) && checkNumberArg(args[1])) {
                         if (player.getInventory().containsAtLeast(new ItemStack(getMappping().get(args[0])),
-                                Integer.parseInt(args[1]))) {
-                            player.sendMessage("충분");
+                                Integer.parseInt(args[1]))) { // 인벤토리에 아이템 충분한지 확인
+                            player.getInventory()
+                                    .remove(new ItemStack(getMappping().get(args[0]), Integer.parseInt(args[1])));
+                            Bukkit.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+                                int code = this.request.post("1", 200, "1", "a");
+                                if (code != 200) {
+                                    player.sendMessage("환전에 실패했어요");
+                                } else {
+                                    player.sendMessage("환전이 완료되었어요!");
+                                }
+                            });
                         } else {
-                            player.sendMessage("부족");
+                            player.sendMessage("아이템이 부족합니다.");
                         }
 
                     }

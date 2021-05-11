@@ -20,7 +20,7 @@ public class Request {
         return out;
     }
 
-    public void requestPostJson(String stringUrl, byte[] out) {
+    public int requestPostJson(String stringUrl, byte[] out) {
         try {
             URL url = new URL(stringUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -36,16 +36,15 @@ public class Request {
             } catch (Exception e) {
                 System.out.println(e);
             }
+            return connection.getResponseCode();
         } catch (Exception e) {
             System.out.println(e);
         }
-        ;
+        return 0;
     }
 
-    public void post(String id, int point, String game, String key) {
+    public int post(String id, int point, String game, String key) {
         byte[] out = makeJsonForm(id, point, game, key);
-        Bukkit.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-            requestPostJson("https://webhook.site/82d39c46-11e8-4482-9126-093eb3ff49d5", out);
-        });
+        return requestPostJson("https://webhook.site/82d39c46-11e8-4482-9126-093eb3ff49d5", out);
     }
 }
