@@ -5,6 +5,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import org.bukkit.Bukkit;
+
 public class Request {
     private final RemoteExecute plugin;
 
@@ -38,5 +40,12 @@ public class Request {
             System.out.println(e);
         }
         ;
+    }
+
+    public void post(String id, int point, String game, String key) {
+        byte[] out = makeJsonForm(id, point, game, key);
+        Bukkit.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            requestPostJson("https://webhook.site/82d39c46-11e8-4482-9126-093eb3ff49d5", out);
+        });
     }
 }
